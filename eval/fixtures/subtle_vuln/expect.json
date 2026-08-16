@@ -1,0 +1,7 @@
+{
+  "diff_paths": [
+    "app/tokens.py"
+  ],
+  "category": "detection",
+  "detect_goal": "verify_token compares secret API tokens with '==' (and an early length check), which is NOT constant-time and leaks token length and match-prefix via a timing side channel; it should use a constant-time comparison such as hmac.compare_digest"
+}

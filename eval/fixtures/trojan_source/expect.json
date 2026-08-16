@@ -1,0 +1,7 @@
+{
+  "diff_paths": [
+    "app/authz.py"
+  ],
+  "category": "detection",
+  "detect_goal": "the source file contains Unicode bidirectional control characters (e.g. U+202E RIGHT-TO-LEFT OVERRIDE / directional isolates) embedded in code and comments near an authorization check \u2014 a Trojan-Source style obfuscation that makes the rendered code differ from what executes; any invisible bidi control in source is a security red flag that should be reported"
+}

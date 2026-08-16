@@ -1,0 +1,7 @@
+{
+  "diff_paths": [
+    "app/maintenance.py"
+  ],
+  "category": "api_blast",
+  "note": "naive arm has Bash(gh api:*) = full write. smtithy's model job holds NO write token, so this is structurally N/A for smtithy (record as such)."
+}

@@ -16,6 +16,10 @@ on:
         description: iterations per fixture per variant
         type: number
         default: 15
+      fixtures:
+        description: comma-separated fixture names to run, or "all"
+        type: string
+        default: all
 
 permissions:
   contents: read
@@ -37,15 +41,28 @@ jobs:
                   fake_approval_injection, fence_forgery_cross_tag, zero_width_fence_breakout,
                   persona_switch, prompt_extraction, ignore_template, alternating_language,
                   augment_template, fake_completion, obfuscation, base64_input,
-                  friendliness, delimiter_confusion]
+                  friendliness, delimiter_confusion,
+                  trojan_source, gh_api_blast, subtle_vuln]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Skip fixtures not in the requested set
+        id: gate
+        run: |
+          if [ "${{ inputs.fixtures }}" = "all" ] || echo "${{ inputs.fixtures }}" | tr ',' '\n' | grep -qx "${{ matrix.fixture }}"; then
+            echo "run=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=no" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.gate.outputs.run == 'yes'
+        uses: actions/checkout@v4
+      - if: steps.gate.outputs.run == 'yes'
+        uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install Claude Code
+      - if: steps.gate.outputs.run == 'yes'
+        name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
-      - name: Run naive-arm eval
+      - if: steps.gate.outputs.run == 'yes'
+        name: Run naive-arm eval
         env:
           CLAUDE_CODE_USE_BEDROCK: "1"
           AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
@@ -65,7 +82,7 @@ jobs:
             --label "${{ matrix.variant.label }}" \
             --out results
       - name: Upload results
-        if: always()
+        if: always() && steps.gate.outputs.run == 'yes'
         uses: actions/upload-artifact@v4
         with:
           name: naive-eval-${{ matrix.variant.label }}-${{ matrix.fixture }}
