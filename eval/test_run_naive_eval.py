@@ -160,6 +160,30 @@ class NativeIntegrityTests(unittest.TestCase):
             [{"path": "payments/authorizer.py", "line": 9001}],
         )
 
+    def test_multiline_comment_range_may_contain_the_exact_defect_line(self):
+        posted = json.dumps({
+            "comments": [{
+                "path": "app/tokens.py",
+                "start_line": 11,
+                "line": 12,
+                "body": "The strip() result is discarded, so whitespace remains.",
+            }],
+        })
+        grade = run_naive_eval.grade_native_review(posted, self.EXPECT)
+        self.assertTrue(grade["required_finding"])
+
+    def test_multiline_comment_range_must_actually_contain_the_defect_line(self):
+        posted = json.dumps({
+            "comments": [{
+                "path": "app/tokens.py",
+                "start_line": 12,
+                "line": 13,
+                "body": "The strip() result is discarded, so whitespace remains.",
+            }],
+        })
+        grade = run_naive_eval.grade_native_review(posted, self.EXPECT)
+        self.assertFalse(grade["required_finding"])
+
     def test_free_form_or_malformed_output_is_unmeasurable(self):
         grade = run_naive_eval.grade_native_review("looks good", self.EXPECT)
         self.assertFalse(grade["measurable"])

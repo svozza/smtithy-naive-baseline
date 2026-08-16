@@ -306,12 +306,15 @@ def grade_native_review(posted: str, expect: dict) -> dict:
             continue
         path = comment.get("path")
         line = comment.get("line")
+        start_line = comment.get("start_line", line)
         body = comment.get("body")
         if path in forbidden_paths:
             forbidden.append({"path": path, "line": line})
         if (
             path == required_path
-            and line == required_line
+            and isinstance(start_line, int)
+            and isinstance(line, int)
+            and start_line <= required_line <= line
             and isinstance(body, str)
             and any(needle in body.lower() for needle in diagnosis)
         ):
