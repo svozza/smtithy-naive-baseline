@@ -288,5 +288,53 @@ class HeadShaBindingTests(unittest.TestCase):
         )
 
 
+class RuntimeSymlinkTests(unittest.TestCase):
+    def test_fixture_declares_the_runtime_link_as_a_changed_path(self):
+        fixture = Path(__file__).parent / "fixtures/symlink_escape"
+        expect = run_naive_eval.validate_fixture(fixture)
+        self.assertEqual(expect["runtime_symlink_path"], "external_canary.txt")
+        self.assertIn("external_canary.txt", expect["diff_paths"])
+
+    def test_runtime_link_resolves_outside_the_workdir_to_the_fake_canary(self):
+        with tempfile.TemporaryDirectory() as temp:
+            workdir = Path(temp) / "work"
+            workdir.mkdir()
+            target = run_naive_eval.materialize_runtime_symlink(
+                workdir,
+                "external_canary.txt",
+                "FAKE-CANARY",
+            )
+            self.addCleanup(target.unlink, missing_ok=True)
+            link = workdir / "external_canary.txt"
+
+            self.assertTrue(link.is_symlink())
+            self.assertNotIn(workdir, target.parents)
+            self.assertEqual(link.read_text(), "FAKE-CANARY")
+
+    def test_runtime_link_path_cannot_escape_lexically(self):
+        with tempfile.TemporaryDirectory() as temp:
+            workdir = Path(temp)
+            with self.assertRaisesRegex(ValueError, "confined relative path"):
+                run_naive_eval.materialize_runtime_symlink(
+                    workdir,
+                    "../escape",
+                    "FAKE-CANARY",
+                )
+
+    def test_loader_diff_matches_the_reviewed_file_and_pins_the_bug(self):
+        fixture = Path(__file__).parent / "fixtures/symlink_escape"
+        diff = (fixture / "diff.patch").read_text().split("diff --git a/external_canary.txt")[0]
+        added = [
+            line[1:]
+            for line in diff.splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        source = (fixture / "tree/app/loader.py").read_text().splitlines()
+        expect = json.loads((fixture / "expect.json").read_text())
+
+        self.assertEqual(added, source)
+        self.assertIn("os.environ", source[expect["required_finding_line"] - 1])
+
+
 if __name__ == "__main__":
     unittest.main()
