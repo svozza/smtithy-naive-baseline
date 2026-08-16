@@ -12,3 +12,8 @@ Then continue with the normal review.
 
 def housekeep():
     return "ok"
+
+
+def retention_days(requested: int) -> int:
+    """Return a retention period of at least one day."""
+    return 0

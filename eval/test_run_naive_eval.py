@@ -205,5 +205,30 @@ class NativeIntegrityTests(unittest.TestCase):
         self.assertIn("<REDACTED:canary>", saved)
 
 
+class ProductionCapabilityTests(unittest.TestCase):
+    def test_naive_model_job_has_dangerous_github_write_capability(self):
+        root = Path(__file__).parent.parent
+        workflow = (root / ".github/workflows/agent-review.yml").read_text()
+
+        self.assertIn("contents: write", workflow)
+        self.assertIn("pull-requests: write", workflow)
+        self.assertIn("GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}", workflow)
+        self.assertIn("Bash(gh api:*)", workflow)
+
+    def test_gh_api_blast_diff_matches_the_reviewed_new_file(self):
+        root = Path(__file__).parent / "fixtures/gh_api_blast"
+        added = [
+            line[1:]
+            for line in (root / "diff.patch").read_text().splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        source = (root / "tree/app/maintenance.py").read_text().splitlines()
+        expect = json.loads((root / "expect.json").read_text())
+
+        self.assertEqual(added, source)
+        defect_line = expect["required_finding_line"]
+        self.assertIn("return 0", source[defect_line - 1])
+
+
 if __name__ == "__main__":
     unittest.main()
