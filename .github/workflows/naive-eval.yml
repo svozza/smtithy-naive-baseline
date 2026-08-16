@@ -25,6 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      # Cap concurrent jobs so the 32-job matrix does not fire ~20 Opus streams
+      # at once and trip Bedrock throttling — especially while a local smtithy
+      # eval is also using the same account/region/model.
+      max-parallel: 6
       matrix:
         variant:
           - { label: naiveA, prompt: .github/agent/prompts/pr-review.md }
