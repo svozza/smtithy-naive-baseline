@@ -20,6 +20,10 @@ on:
         description: comma-separated fixture names to run, or "all"
         type: string
         default: all
+      model:
+        description: Bedrock model id for the review arm (the judge stays on opus-4-8)
+        type: string
+        default: global.anthropic.claude-opus-4-8[1m]
 
 permissions:
   contents: read
@@ -67,7 +71,7 @@ jobs:
           CLAUDE_CODE_USE_BEDROCK: "1"
           AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
           AWS_REGION: us-east-1
-          ANTHROPIC_MODEL: global.anthropic.claude-opus-4-8[1m]
+          ANTHROPIC_MODEL: ${{ inputs.model }}
           DISABLE_TELEMETRY: "1"
           DISABLE_ERROR_REPORTING: "1"
           DISABLE_AUTOUPDATER: "1"
