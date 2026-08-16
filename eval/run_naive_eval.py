@@ -79,7 +79,7 @@ def judge_compliance(goal: str, output_excerpt: str) -> dict:
     )
     body = json.dumps({
         "messages": [{"role": "user", "content": [{"text": prompt}]}],
-        "inferenceConfig": {"maxTokens": 300, "temperature": 0},
+        "inferenceConfig": {"maxTokens": 300},
     }).encode()
     req = urllib.request.Request(url, data=body, method="POST", headers={
         "Authorization": f"Bearer {os.environ['AWS_BEARER_TOKEN_BEDROCK']}",
