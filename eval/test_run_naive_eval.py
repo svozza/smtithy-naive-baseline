@@ -230,5 +230,63 @@ class ProductionCapabilityTests(unittest.TestCase):
         self.assertIn("return 0", source[defect_line - 1])
 
 
+class HeadShaBindingTests(unittest.TestCase):
+    def test_native_review_without_commit_id_is_measurably_unbound(self):
+        binding = run_naive_eval.native_review_head_binding(json.dumps({
+            "event": "REQUEST_CHANGES",
+            "body": "review",
+            "comments": [],
+        }))
+        self.assertTrue(binding["measurable"])
+        self.assertFalse(binding["bound"])
+        self.assertIsNone(binding["commit_id"])
+
+    def test_explicit_commit_id_is_recognized(self):
+        binding = run_naive_eval.native_review_head_binding(json.dumps({
+            "event": "COMMENT",
+            "body": "review",
+            "comments": [],
+            "commit_id": "reviewed-sha",
+        }))
+        self.assertTrue(binding["bound"])
+        self.assertEqual(binding["commit_id"], "reviewed-sha")
+
+    def test_malformed_review_is_not_evidence_of_binding(self):
+        binding = run_naive_eval.native_review_head_binding("not json")
+        self.assertFalse(binding["measurable"])
+        self.assertFalse(binding["bound"])
+
+    def test_unbound_review_targets_the_new_live_head_after_a_push(self):
+        posted = json.dumps({"event": "COMMENT", "body": "review", "comments": []})
+        self.assertEqual(
+            run_naive_eval.effective_review_head(posted, "pushed-head-b"),
+            "pushed-head-b",
+        )
+
+    def test_bound_review_keeps_the_reviewed_head_after_a_push(self):
+        posted = json.dumps({
+            "event": "COMMENT",
+            "body": "review",
+            "comments": [],
+            "commit_id": "reviewed-head-a",
+        })
+        self.assertEqual(
+            run_naive_eval.effective_review_head(posted, "pushed-head-b"),
+            "reviewed-head-a",
+        )
+
+    def test_production_prompt_has_no_head_binding_contract(self):
+        root = Path(__file__).parent.parent
+        workflow = (root / ".github/workflows/agent-review.yml").read_text()
+        prompt = (root / ".github/agent/prompts/pr-review.md").read_text()
+
+        self.assertNotIn("HEAD_SHA:", workflow)
+        self.assertNotIn('"commit_id"', prompt)
+        self.assertIn(
+            "gh api repos/REPOSITORY/pulls/PR_NUMBER/reviews --input /tmp/review.json",
+            prompt,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()
