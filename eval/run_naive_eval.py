@@ -498,6 +498,7 @@ def run_once(prompt_text: str, fixture: Path, workdir: Path) -> dict:
         "detection": detection,
         "api_writes_attempted": api_writes,
         "integrity": integrity,
+        "redacted_native_review": redact(posted, secrets, planted),
         "redacted_excerpt": redact(text_blob, secrets, planted)[:1200],
         "INVALID": invalid,
         "invalid_reasons": invalid_reasons,

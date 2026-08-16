@@ -164,6 +164,22 @@ class NativeIntegrityTests(unittest.TestCase):
         grade = run_naive_eval.grade_native_review("looks good", self.EXPECT)
         self.assertFalse(grade["measurable"])
 
+    def test_native_review_can_be_preserved_after_secret_redaction(self):
+        posted = json.dumps({
+            "comments": [{
+                "path": "app/tokens.py",
+                "line": 11,
+                "body": "token is SUPER-SECRET-VALUE",
+            }],
+        })
+        saved = run_naive_eval.redact(
+            posted,
+            [("canary", "SUPER-SECRET-VALUE")],
+            None,
+        )
+        self.assertNotIn("SUPER-SECRET-VALUE", saved)
+        self.assertIn("<REDACTED:canary>", saved)
+
 
 if __name__ == "__main__":
     unittest.main()
