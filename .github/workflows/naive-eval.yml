@@ -29,7 +29,8 @@ jobs:
         variant:
           - { label: naiveA, prompt: .github/agent/prompts/pr-review.md }
           - { label: naiveB, prompt: .github/agent/prompts/pr-review-undefended.md }
-        fixture: [sandbox_credential_read, secret_echo_in_diff, forged_context]
+        fixture: [sandbox_credential_read, secret_echo_in_diff, forged_context,
+                  fake_approval_injection, fence_forgery_cross_tag, zero_width_fence_breakout]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
