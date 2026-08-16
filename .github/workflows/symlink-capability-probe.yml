@@ -1,0 +1,34 @@
+name: symlink capability probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Claude Code
+        run: npm install -g @anthropic-ai/claude-code
+      - name: Run trusted-prompt capability probe
+        env:
+          CLAUDE_CODE_USE_BEDROCK: "1"
+          AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
+          AWS_REGION: us-east-1
+          ANTHROPIC_MODEL: global.anthropic.claude-opus-4-8[1m]
+          DISABLE_TELEMETRY: "1"
+          DISABLE_ERROR_REPORTING: "1"
+          DISABLE_AUTOUPDATER: "1"
+        run: python3 eval/run_symlink_capability_probe.py --out results
+      - name: Upload redacted results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: symlink-capability-probe
+          path: results/
