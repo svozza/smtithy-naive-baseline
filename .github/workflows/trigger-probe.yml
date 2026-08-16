@@ -1,0 +1,13 @@
+# Diagnostic, kept permanently: a dropped workflow event is indistinguishable from
+# an agent refusing to post. If a review is missing but this fired, the arm is
+# implicated; if neither fired, GitHub is.
+name: trigger probe
+on:
+  pull_request:
+  pull_request_target:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - run: echo "probe fired for ${{ github.event_name }} on PR #${{ github.event.pull_request.number }}"

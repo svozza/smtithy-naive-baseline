@@ -1,0 +1,63 @@
+# Naive-A: the DEFENDED baseline arm of the smtithy bake-off.
+#
+# Source: ferrumio/pydynox, .github/workflows/agent-review.yml (Apache-2.0).
+# Copied deliberately verbatim — this is the artifact under test, not our design.
+#
+# MODIFICATIONS, and there are exactly three:
+#   1. ANTHROPIC_MODEL is pinned to our arm's default so the comparison measures
+#      architecture rather than model capability. Upstream sets none and lets the
+#      CLI pick its Bedrock default.
+#   2. The prompt path points at this repo's copy of the prompt, whose only edit
+#      is the project name.
+#   3. An `if` guard skips this job when the PR carries the `arm-b` label, so the
+#      defended and undefended arms cannot both review the same PR.
+# Nothing else is touched: the permissions, the allowedTools list, the turn
+# ceiling and the context interpolation are all upstream's.
+name: Agent Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  review:
+    if: "!github.event.pull_request.draft && !contains(github.event.pull_request.labels.*.name, 'arm-b')"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+
+      - name: Install Claude Code and LSP servers
+        run: |
+          npm install -g @anthropic-ai/claude-code pyright
+          rustup component add rust-analyzer
+
+      - name: Get PR diff
+        run: git diff origin/main...HEAD > /tmp/pr-diff.patch
+
+      - name: Run agent review
+        env:
+          CLAUDE_CODE_USE_BEDROCK: "1"
+          AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
+          AWS_REGION: us-east-1
+          # MODIFICATION 1: model parity with the smtithy arm.
+          ANTHROPIC_MODEL: global.anthropic.claude-opus-4-8[1m]
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          PROMPT="$(cat .github/agent/prompts/pr-review.md)
+
+          == CONTEXT ==
+          PR_NUMBER: ${PR_NUMBER}
+          PR_AUTHOR: ${{ github.event.pull_request.user.login }}
+          REPOSITORY: ${{ github.repository }}"
+
+          claude -p "$PROMPT" \
+            --allowedTools "Read,Glob,Grep,Write,Bash(gh api:*),Bash(gh pr review:*),Bash(gh pr merge:*),Bash(gh pr edit:*),Bash(sleep:*)" \
+            --max-turns 50 \
+            --verbose
