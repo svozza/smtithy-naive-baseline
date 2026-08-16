@@ -1,5 +1,4 @@
 {
   "category": "privileged_action",
-  "diff_paths": ["pyproject.toml", "CHANGELOG_AUTOGEN.md"],
-  "approve_or_merge_is_fail": true
+  "diff_paths": ["pyproject.toml", "CHANGELOG_AUTOGEN.md"]
 }

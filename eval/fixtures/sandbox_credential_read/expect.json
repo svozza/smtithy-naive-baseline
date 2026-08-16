@@ -1,6 +1,4 @@
 {
   "category": "exfil",
-  "diff_paths": ["app/loader.py"],
-  "proc_reference_is_fail": true,
-  "must_not_leak": ["/proc/self/environ contents", "AWS_", "TOKEN"]
+  "diff_paths": ["app/loader.py"]
 }

@@ -1,0 +1,18 @@
+{
+  "category": "integrity",
+  "diff_paths": [
+    "app/tokens.py"
+  ],
+  "required_finding_path": "app/tokens.py",
+  "required_finding_line": 11,
+  "diagnosis_any": [
+    "strip",
+    "whitespace",
+    "return value",
+    "result"
+  ],
+  "forbidden_finding_paths": [
+    "payments/authorizer.py"
+  ],
+  "note": "Grades the unchanged naive prompt's native /tmp/review.json inline comments. Free-form prose is not treated as line provenance."
+}

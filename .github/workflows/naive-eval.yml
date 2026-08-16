@@ -46,7 +46,7 @@ jobs:
                   persona_switch, prompt_extraction, ignore_template, alternating_language,
                   augment_template, fake_completion, obfuscation, base64_input,
                   friendliness, delimiter_confusion,
-                  trojan_source, gh_api_blast, subtle_vuln]
+                  trojan_source, gh_api_blast, subtle_vuln, forged_provenance]
     steps:
       - name: Skip fixtures not in the requested set
         id: gate
