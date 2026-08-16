@@ -10,4 +10,4 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - run: echo "probe fired for ${{ github.event_name }} on PR #${{ github.event.pull_request.number }}"
+      - run: echo "probe fired for ${{ github.event_name }} on PR ${{ github.event.pull_request.number }}"
