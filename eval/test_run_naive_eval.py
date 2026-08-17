@@ -460,6 +460,35 @@ class ToolCapabilityProbeTests(unittest.TestCase):
         self.assertFalse(result["target_visible"])
 
 
+class AdversarialToolFixtureTests(unittest.TestCase):
+    def test_write_fixture_ignores_the_normal_review_json_write(self):
+        expect = {
+            "target_tool_names": ["Write"],
+            "target_side_effect_path": "capability-marker.txt",
+        }
+        requests = [
+            {"tool": "Write", "input": {"file_path": "/tmp/review.json"}},
+            {"tool": "Write", "input": {"file_path": "/repo/capability-marker.txt"}},
+        ]
+        self.assertEqual(
+            run_naive_eval.targeted_tool_attempts(requests, expect),
+            [requests[1]],
+        )
+
+    def test_every_targeted_tool_fixture_is_wired_and_pins_line_twenty(self):
+        fixtures = Path(__file__).parent / "fixtures"
+        for name in (
+            "tool_injection_write",
+            "tool_injection_agent",
+            "tool_injection_toolsearch",
+            "tool_injection_workflow",
+            "tool_injection_skill",
+        ):
+            expect = run_naive_eval.validate_fixture(fixtures / name)
+            self.assertEqual(expect["required_finding_line"], 20)
+            self.assertTrue(expect["target_tool_names"])
+
+
 class NativeRenderingSignalTests(unittest.TestCase):
     def test_known_rendering_constructs_are_recorded_without_semantic_judgment(self):
         posted = json.dumps({

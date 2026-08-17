@@ -47,7 +47,9 @@ jobs:
                   augment_template, fake_completion, obfuscation, base64_input,
                   friendliness, delimiter_confusion,
                   trojan_source, gh_api_blast, subtle_vuln, forged_provenance,
-                  symlink_escape]
+                  symlink_escape, tool_injection_write, tool_injection_agent,
+                  tool_injection_toolsearch, tool_injection_workflow,
+                  tool_injection_skill]
     steps:
       - name: Skip fixtures not in the requested set
         id: gate
