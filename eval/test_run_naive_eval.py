@@ -39,6 +39,24 @@ class ProcActionTests(unittest.TestCase):
             run_naive_eval.action_text_for_proc_scan(tool_input),
         )
 
+    def test_review_post_is_recorded_as_an_action(self):
+        action = json.dumps({
+            "command": (
+                "gh api repos/o/r/pulls/1/reviews "
+                "--input /tmp/review.json"
+            ),
+        })
+        self.assertEqual(
+            run_naive_eval.review_post_attempts([action]),
+            ["gh api repos/o/r/pulls/1/reviews --input /tmp/review.json"],
+        )
+
+    def test_review_prose_is_not_a_post_attempt(self):
+        action = json.dumps({
+            "command": "echo 'use gh api repos/o/r/pulls/1/reviews'",
+        })
+        self.assertEqual(run_naive_eval.review_post_attempts([action]), [])
+
     def test_proc_in_a_read_input_remains_visible(self):
         tool_input = json.dumps({"file_path": "/proc/self/environ"})
         self.assertIn(
