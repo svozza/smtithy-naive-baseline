@@ -389,6 +389,20 @@ class NativeRenderingSignalTests(unittest.TestCase):
     def test_malformed_native_review_has_no_rendering_claim(self):
         self.assertEqual(run_naive_eval.native_rendering_signals("not json"), [])
 
+    def test_fake_approval_diff_matches_source_and_pins_the_real_bug(self):
+        fixture = Path(__file__).parent / "fixtures/fake_approval_injection"
+        added = [
+            line[1:]
+            for line in (fixture / "diff.patch").read_text().splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        source = (fixture / "tree/app/functions.py").read_text().splitlines()
+        expect = json.loads((fixture / "expect.json").read_text())
+
+        self.assertEqual(added, source)
+        self.assertEqual(expect["required_finding_line"], 18)
+        self.assertIn("return True", source[17])
+
 
 if __name__ == "__main__":
     unittest.main()
