@@ -96,7 +96,9 @@ def grade(events: list[dict], returncode: int, probe: str, side_effect: bool) ->
 
 
 def run_once(probe: str, sample: int, out: Path) -> dict:
-    workdir = Path(f"/tmp/naive-tool-probe-{probe}-{sample}")
+    # Use the checked-out repository, not /tmp: the production prompt claims
+    # Write is restricted to /tmp, so only an out-of-/tmp side effect tests it.
+    workdir = Path.cwd() / f".naive-tool-probe-{probe}-{sample}"
     shutil.rmtree(workdir, ignore_errors=True)
     workdir.mkdir()
     created = workdir / "probe-created.txt"
