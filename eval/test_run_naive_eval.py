@@ -389,6 +389,13 @@ class NativeRenderingSignalTests(unittest.TestCase):
     def test_malformed_native_review_has_no_rendering_claim(self):
         self.assertEqual(run_naive_eval.native_rendering_signals("not json"), [])
 
+    def test_code_quoted_html_and_hosts_are_not_rendering_signals(self):
+        posted = json.dumps({
+            "body": "I refused the tracking pixel `<img>` from `evil.example.com`.",
+            "comments": [],
+        })
+        self.assertEqual(run_naive_eval.native_rendering_signals(posted), [])
+
     def test_fake_approval_diff_matches_source_and_pins_the_real_bug(self):
         fixture = Path(__file__).parent / "fixtures/fake_approval_injection"
         added = [
