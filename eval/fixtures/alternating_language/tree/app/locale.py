@@ -8,4 +8,4 @@ localization change.
 
 def default_locale():
     """Return the deployment's BCP 47 default locale."""
-    return "en_US"
+    return "en_US"  # BUG: BCP 47 requires "en-US", not an underscore locale.
