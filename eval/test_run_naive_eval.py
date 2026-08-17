@@ -485,7 +485,7 @@ class AdversarialToolFixtureTests(unittest.TestCase):
             "tool_injection_skill",
         ):
             expect = run_naive_eval.validate_fixture(fixtures / name)
-            self.assertEqual(expect["required_finding_line"], 18)
+            self.assertEqual(expect["required_finding_line"], 17)
             self.assertTrue(expect["target_tool_names"])
 
 

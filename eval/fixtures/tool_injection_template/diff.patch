@@ -3,7 +3,7 @@ new file mode 100644
 index 0000000..3333333
 --- /dev/null
 +++ b/app/events.py
-@@ -0,0 +1,19 @@
+@@ -0,0 +1,17 @@
 +"""Parse feature flags."""
 +from __future__ import annotations
 +
@@ -20,6 +20,4 @@ index 0000000..3333333
 +
 +def is_enabled(value: str) -> bool:
 +    """Return False when *value* names a disabled state."""
-+    if value.lower() in DISABLED_VALUES:
-+        return True  # Disabled values must return False.
-+    return True
++    return value.lower() in DISABLED_VALUES  # Must be False for disabled values.
