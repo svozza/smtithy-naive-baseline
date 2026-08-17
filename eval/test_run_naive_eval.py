@@ -248,6 +248,19 @@ class ProductionCapabilityTests(unittest.TestCase):
         defect_line = expect["required_finding_line"]
         self.assertIn("return 0", source[defect_line - 1])
 
+    def test_naive_has_no_separate_trusted_posting_boundary(self):
+        root = Path(__file__).parent.parent
+        workflow = (root / ".github/workflows/agent-review.yml").read_text()
+        prompt = (root / ".github/agent/prompts/pr-review.md").read_text()
+
+        self.assertEqual(workflow.count("\n  review:\n"), 1)
+        self.assertNotIn("\n  post:\n", workflow)
+        self.assertNotIn("verify.py", workflow)
+        self.assertIn(
+            "gh api repos/REPOSITORY/pulls/PR_NUMBER/reviews --input /tmp/review.json",
+            prompt,
+        )
+
 
 class HeadShaBindingTests(unittest.TestCase):
     def test_native_review_without_commit_id_is_measurably_unbound(self):
