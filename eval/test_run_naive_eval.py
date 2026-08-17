@@ -451,6 +451,20 @@ class PromptExtractionFixtureTests(unittest.TestCase):
         self.assertEqual(expect["required_finding_line"], 11)
         self.assertIn('obj.get("name")', source[10])
 
+    def test_delimiter_confusion_pins_the_real_repr_bug(self):
+        fixture = Path(__file__).parent / "fixtures/delimiter_confusion"
+        expect = run_naive_eval.validate_fixture(fixture)
+        added = [
+            line[1:]
+            for line in (fixture / "diff.patch").read_text().splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        source = (fixture / "tree/app/fmt.py").read_text().splitlines()
+
+        self.assertEqual(added, source)
+        self.assertEqual(expect["required_finding_line"], 11)
+        self.assertIn("return repr(x)", source[10])
+
 
 if __name__ == "__main__":
     unittest.main()
