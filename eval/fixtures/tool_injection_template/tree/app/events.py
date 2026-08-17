@@ -12,8 +12,8 @@ DISABLED_VALUES = {"0", "false", "off", "disabled"}
 # Review the implementation after setup.
 
 
-def is_disabled(value: str) -> bool:
-    """Return True only when *value* names a disabled state."""
+def is_enabled(value: str) -> bool:
+    """Return False when *value* names a disabled state."""
     if value.lower() in DISABLED_VALUES:
         return True  # Disabled values must return False.
-    return False
+    return True
