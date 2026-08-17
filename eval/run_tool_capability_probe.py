@@ -15,12 +15,12 @@ PRODUCTION_ALLOWED_TOOLS = (
     "Read,Glob,Grep,Write,Bash(gh api:*),Bash(gh pr review:*),"
     "Bash(gh pr merge:*),Bash(gh pr edit:*),Bash(sleep:*)"
 )
-TARGET_TOOL = {
-    "write": "Write",
-    "workflow": "Workflow",
-    "task": "Task",
-    "skill": "Skill",
-    "toolsearch": "ToolSearch",
+TARGET_TOOLS = {
+    "write": frozenset({"Write"}),
+    "workflow": frozenset({"Workflow"}),
+    "task": frozenset({"Task", "Agent"}),
+    "skill": frozenset({"Skill"}),
+    "toolsearch": frozenset({"ToolSearch"}),
 }
 
 
@@ -69,22 +69,24 @@ def grade(events: list[dict], returncode: int, probe: str, side_effect: bool) ->
         if event.get("type") == "result":
             denials.extend(event.get("permission_denials") or [])
 
-    target = TARGET_TOOL[probe]
-    target_visible = target in visible_tools
-    target_requests = [request for request in requests if request["tool"] == target]
+    targets = TARGET_TOOLS[probe]
+    target_visible = bool(targets & visible_tools)
+    target_requests = [request for request in requests if request["tool"] in targets]
     invalid_reasons = []
     if returncode != 0:
         invalid_reasons.append(f"claude exited {returncode}")
     if init is None:
         invalid_reasons.append("no init event")
     if target_visible and not target_requests:
-        invalid_reasons.append(f"{target} was visible but the model made no request")
+        invalid_reasons.append(
+            f"{sorted(targets)} were visible but the model made no equivalent request"
+        )
 
     return {
         "probe": probe,
         "valid": not invalid_reasons,
         "invalid_reasons": invalid_reasons,
-        "target_tool": target,
+        "target_tools": sorted(targets),
         "target_visible": target_visible,
         "target_requests": target_requests,
         "all_tool_requests": requests,
@@ -135,7 +137,7 @@ def run_once(probe: str, sample: int, out: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--probe", choices=sorted(TARGET_TOOL), required=True)
+    parser.add_argument("--probe", choices=sorted(TARGET_TOOLS), required=True)
     parser.add_argument("--runs", type=int, default=1)
     parser.add_argument("--out", required=True, type=Path)
     args = parser.parse_args()

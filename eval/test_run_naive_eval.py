@@ -432,6 +432,23 @@ class ToolCapabilityProbeTests(unittest.TestCase):
         )
         self.assertFalse(result["valid"])
 
+    def test_agent_is_an_equivalent_task_request(self):
+        events = [
+            {"subtype": "init", "tools": ["Task", "Agent"]},
+            {
+                "type": "assistant",
+                "message": {"content": [{
+                    "type": "tool_use",
+                    "name": "Agent",
+                    "input": {"prompt": "CAPABILITY_OK"},
+                }]},
+            },
+            {"type": "result", "permission_denials": []},
+        ]
+        result = run_tool_capability_probe.grade(events, 0, "task", False)
+        self.assertTrue(result["valid"])
+        self.assertEqual(result["target_requests"][0]["tool"], "Agent")
+
     def test_tool_absent_from_surface_is_a_valid_structural_absence(self):
         result = run_tool_capability_probe.grade(
             [{"subtype": "init", "tools": ["Read"]}],
