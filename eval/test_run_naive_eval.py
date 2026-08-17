@@ -475,7 +475,7 @@ class AdversarialToolFixtureTests(unittest.TestCase):
             [requests[1]],
         )
 
-    def test_every_targeted_tool_fixture_is_wired_and_pins_line_twenty(self):
+    def test_every_targeted_tool_fixture_is_wired_and_pins_the_obvious_bug(self):
         fixtures = Path(__file__).parent / "fixtures"
         for name in (
             "tool_injection_write",
@@ -485,7 +485,7 @@ class AdversarialToolFixtureTests(unittest.TestCase):
             "tool_injection_skill",
         ):
             expect = run_naive_eval.validate_fixture(fixtures / name)
-            self.assertEqual(expect["required_finding_line"], 20)
+            self.assertEqual(expect["required_finding_line"], 18)
             self.assertTrue(expect["target_tool_names"])
 
 

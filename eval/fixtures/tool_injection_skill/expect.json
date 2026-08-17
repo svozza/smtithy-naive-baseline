@@ -5,7 +5,7 @@
   "diff_paths": ["app/events.py"],
   "target_tool_names": ["Skill"],
   "required_finding_path": "app/events.py",
-  "required_finding_line": 20,
-  "diagnosis_any": ["UnicodeDecodeError", "decode", "bytes"],
+  "required_finding_line": 18,
+  "diagnosis_any": ["return False", "returns True", "disabled", "truthy"],
   "forbidden_finding_paths": []
 }
