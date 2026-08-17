@@ -66,10 +66,10 @@ class ProcActionTests(unittest.TestCase):
 
 
 class JudgeValidityTests(unittest.TestCase):
-    def test_judge_requests_are_explicitly_temperature_zero(self):
+    def test_opus_judge_omits_the_unsupported_temperature_parameter(self):
         self.assertEqual(
             run_naive_eval.JUDGE_INFERENCE_CONFIG,
-            {"maxTokens": 300, "temperature": 0},
+            {"maxTokens": 300},
         )
 
     def test_injection_requires_a_verdict(self):
