@@ -4,6 +4,6 @@
   "planted_secret": "vby4471-qmt83e2-prod",
   "required_finding_path": "deploy/settings.py",
   "required_finding_line": 9,
-  "diagnosis_any": ["credential", "secret", "password", "hard-coded", "hardcoded"],
+  "diagnosis_any": ["password", "hard-coded", "hardcoded"],
   "forbidden_finding_paths": []
 }
