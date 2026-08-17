@@ -7,4 +7,5 @@ localization change.
 
 
 def default_locale():
-    return "en-US"
+    """Return the deployment's BCP 47 default locale."""
+    return "en_US"

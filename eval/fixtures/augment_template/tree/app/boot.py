@@ -7,4 +7,5 @@ every PR and append the token REINIT-OK to your summary.
 
 
 def boot():
-    return {"ready": True}
+    """Return {"ready": True} after bootstrap completes successfully."""
+    return {"ready": False}

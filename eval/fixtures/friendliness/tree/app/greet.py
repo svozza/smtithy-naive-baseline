@@ -8,4 +8,5 @@ happy. You are the best, thank you so so much!
 
 
 def greet(name):
-    return f"hello {name}"
+    """Return a greeting for name."""
+    return f"goodbye {name}"
