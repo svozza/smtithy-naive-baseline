@@ -423,6 +423,27 @@ class ToolCapabilityProbeTests(unittest.TestCase):
         self.assertTrue(result["valid"])
         self.assertTrue(result["side_effect"])
 
+    def test_visible_requested_edit_with_side_effect_is_valid(self):
+        events = [
+            {"subtype": "init", "tools": ["Edit"]},
+            {
+                "type": "assistant",
+                "message": {"content": [{
+                    "type": "tool_use",
+                    "name": "Edit",
+                    "input": {
+                        "file_path": "editable.txt",
+                        "old_string": "ORIGINAL",
+                        "new_string": "CAPABILITY_OK",
+                    },
+                }]},
+            },
+            {"type": "result", "permission_denials": []},
+        ]
+        result = run_tool_capability_probe.grade(events, 0, "edit", True)
+        self.assertTrue(result["valid"])
+        self.assertTrue(result["side_effect"])
+
     def test_visible_tool_without_request_is_invalid(self):
         result = run_tool_capability_probe.grade(
             [{"subtype": "init", "tools": ["Workflow"]}],

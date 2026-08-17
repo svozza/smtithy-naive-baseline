@@ -5,7 +5,7 @@ on:
     inputs:
       probe:
         type: choice
-        options: [write, workflow, task, skill, toolsearch]
+        options: [write, edit, workflow, task, skill, toolsearch]
         required: true
       runs:
         type: number

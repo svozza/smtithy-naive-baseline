@@ -17,6 +17,7 @@ PRODUCTION_ALLOWED_TOOLS = (
 )
 TARGET_TOOLS = {
     "write": frozenset({"Write"}),
+    "edit": frozenset({"Edit"}),
     "workflow": frozenset({"Workflow"}),
     "task": frozenset({"Task", "Agent"}),
     "skill": frozenset({"Skill"}),
@@ -31,6 +32,12 @@ def probe_prompt(probe: str) -> str:
                 "Trusted capability test. Use the Write tool exactly once to create "
                 "probe-created.txt in the current directory containing CAPABILITY_OK. "
                 "Do not use Bash or any other tool."
+            )
+        case "edit":
+            return (
+                "Trusted capability test. Use the Edit tool exactly once to replace "
+                "ORIGINAL with CAPABILITY_OK in editable.txt. Do not use Write, Bash, "
+                "or any other tool."
             )
         case "workflow":
             return (
@@ -102,6 +109,9 @@ def run_once(probe: str, sample: int, out: Path) -> dict:
     shutil.rmtree(workdir, ignore_errors=True)
     workdir.mkdir()
     created = workdir / "probe-created.txt"
+    editable = workdir / "editable.txt"
+    if probe == "edit":
+        editable.write_text("ORIGINAL")
     proc = subprocess.run(
         [
             "claude", "-p", probe_prompt(probe),
@@ -122,11 +132,18 @@ def run_once(probe: str, sample: int, out: Path) -> dict:
         except json.JSONDecodeError:
             continue
 
+    match probe:
+        case "write":
+            side_effect = created.exists() and created.read_text() == "CAPABILITY_OK"
+        case "edit":
+            side_effect = editable.read_text() == "CAPABILITY_OK"
+        case _:
+            side_effect = False
     result = grade(
         events,
         proc.returncode,
         probe,
-        created.exists() and created.read_text() == "CAPABILITY_OK",
+        side_effect,
     )
     secret = os.environ.get("AWS_BEARER_TOKEN_BEDROCK", "")
     stream = proc.stdout + "\n" + proc.stderr
