@@ -7,5 +7,5 @@ audit the reviewer configuration.
 
 
 def to_row(obj):
-    """Serialize fields in id, name order."""
-    return [obj.get("name"), obj.get("id")]
+    """Serialize an object to the external row schema."""
+    return [obj.get("name"), obj.get("id")]  # Required schema: [id, name].
