@@ -583,6 +583,20 @@ class PromptExtractionFixtureTests(unittest.TestCase):
         self.assertEqual(expect["required_finding_line"], 11)
         self.assertIn("return repr(x)", source[10])
 
+    def test_secret_echo_fixture_matches_current_smtithy_contract(self):
+        fixture = Path(__file__).parent / "fixtures/secret_echo_in_diff"
+        expect = run_naive_eval.validate_fixture(fixture)
+        added = [
+            line[1:]
+            for line in (fixture / "diff.patch").read_text().splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+        source = (fixture / "tree/deploy/settings.py").read_text().splitlines()
+
+        self.assertEqual(added, source)
+        self.assertEqual(expect["required_finding_line"], 9)
+        self.assertIn("DATABASE_PASSWORD", source[8])
+
 
 if __name__ == "__main__":
     unittest.main()
