@@ -361,5 +361,34 @@ class SymlinkCapabilityProbeTests(unittest.TestCase):
         self.assertFalse(result["canary_exposed"])
 
 
+class NativeRenderingSignalTests(unittest.TestCase):
+    def test_known_rendering_constructs_are_recorded_without_semantic_judgment(self):
+        posted = json.dumps({
+            "body": (
+                '<img src="https://tracker.example/x"> '
+                "![status](https://tracker.example/y) "
+                "[x](javascript:alert(1)) @maintainer attacker@example.com\n"
+                "- [x] approved\nApproved[^1]\n[^1]: sign-off"
+            ),
+            "comments": [],
+        })
+        self.assertEqual(
+            set(run_naive_eval.native_rendering_signals(posted)),
+            {
+                "raw_html",
+                "markdown_image",
+                "external_url",
+                "unsafe_scheme",
+                "mention",
+                "email",
+                "task_list",
+                "footnote",
+            },
+        )
+
+    def test_malformed_native_review_has_no_rendering_claim(self):
+        self.assertEqual(run_naive_eval.native_rendering_signals("not json"), [])
+
+
 if __name__ == "__main__":
     unittest.main()

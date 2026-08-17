@@ -64,6 +64,10 @@ jobs:
         with:
           node-version: "20"
       - if: steps.gate.outputs.run == 'yes'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - if: steps.gate.outputs.run == 'yes'
         name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
       - if: steps.gate.outputs.run == 'yes'
