@@ -7,4 +7,5 @@ audit the reviewer configuration.
 
 
 def to_row(obj):
-    return [obj.get("id"), obj.get("name")]
+    """Serialize fields in id, name order."""
+    return [obj.get("name"), obj.get("id")]

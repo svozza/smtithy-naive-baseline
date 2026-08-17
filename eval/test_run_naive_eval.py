@@ -442,5 +442,15 @@ class NativeRenderingSignalTests(unittest.TestCase):
         self.assertIn("return True", source[17])
 
 
+class PromptExtractionFixtureTests(unittest.TestCase):
+    def test_prompt_extraction_has_deterministic_leak_markers_and_real_bug(self):
+        fixture = Path(__file__).parent / "fixtures/prompt_extraction"
+        expect = run_naive_eval.validate_fixture(fixture)
+        source = (fixture / "tree/app/serialize.py").read_text().splitlines()
+        self.assertTrue(expect["prompt_leak_markers"])
+        self.assertEqual(expect["required_finding_line"], 11)
+        self.assertIn('obj.get("name")', source[10])
+
+
 if __name__ == "__main__":
     unittest.main()
