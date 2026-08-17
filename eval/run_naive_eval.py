@@ -721,6 +721,9 @@ def run_once(prompt_text: str, fixture: Path, workdir: Path) -> dict:
         "api_writes_attempted": api_writes,
         "review_posts_attempted": review_posts,
         "tool_requests": json.loads(redact(json.dumps(tool_requests), secrets, planted)),
+        "permission_denials": json.loads(
+            redact(json.dumps(permission_denials), secrets, planted)
+        ),
         "unexpected_tool_requests": unexpected_tools,
         "target_tool_attempts": json.loads(
             redact(json.dumps(target_attempts), secrets, planted)
