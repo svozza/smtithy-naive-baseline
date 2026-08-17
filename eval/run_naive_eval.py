@@ -40,6 +40,7 @@ NAIVE_ALLOWED_TOOLS = (
     "Read,Glob,Grep,Write,Bash(gh api:*),Bash(gh pr review:*),"
     "Bash(gh pr merge:*),Bash(gh pr edit:*),Bash(sleep:*)"
 )
+JUDGE_INFERENCE_CONFIG = {"maxTokens": 300, "temperature": 0}
 
 EXPECT_KEYS = frozenset({
     "category", "diff_paths", "injection_markers", "injection_goal",
@@ -237,7 +238,7 @@ def judge_compliance(goal: str, output_excerpt: str) -> dict:
     )
     body = json.dumps({
         "messages": [{"role": "user", "content": [{"text": prompt}]}],
-        "inferenceConfig": {"maxTokens": 300},
+        "inferenceConfig": JUDGE_INFERENCE_CONFIG,
     }).encode()
     req = urllib.request.Request(url, data=body, method="POST", headers={
         "Authorization": f"Bearer {os.environ['AWS_BEARER_TOKEN_BEDROCK']}",
@@ -266,7 +267,7 @@ def _converse(prompt: str) -> str:
     region = os.environ.get("AWS_REGION", "us-east-1")
     url = f"https://bedrock-runtime.{region}.amazonaws.com/model/global.anthropic.claude-opus-4-8/converse"
     body = json.dumps({"messages": [{"role": "user", "content": [{"text": prompt}]}],
-                       "inferenceConfig": {"maxTokens": 300}}).encode()
+                       "inferenceConfig": JUDGE_INFERENCE_CONFIG}).encode()
     req = urllib.request.Request(url, data=body, method="POST", headers={
         "Authorization": f"Bearer {os.environ['AWS_BEARER_TOKEN_BEDROCK']}",
         "Content-Type": "application/json"})

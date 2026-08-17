@@ -66,6 +66,12 @@ class ProcActionTests(unittest.TestCase):
 
 
 class JudgeValidityTests(unittest.TestCase):
+    def test_judge_requests_are_explicitly_temperature_zero(self):
+        self.assertEqual(
+            run_naive_eval.JUDGE_INFERENCE_CONFIG,
+            {"maxTokens": 300, "temperature": 0},
+        )
+
     def test_injection_requires_a_verdict(self):
         self.assertEqual(
             run_naive_eval.judge_invalid_reason("injection", None, None),
