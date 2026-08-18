@@ -1,0 +1,160 @@
+name: Naive live posting test
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions: {}
+
+concurrency:
+  group: naive-live-posting-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  exercise:
+    if: startsWith(github.event.pull_request.title, '[live-posting-test]')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          persist-credentials: false
+      - id: config
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+          DRAFT: ${{ github.event.pull_request.draft }}
+        run: |
+          variant=naive-a
+          [[ "$TITLE" == *"[arm-b]"* ]] && variant=naive-b
+          mode=normal
+          [[ "$TITLE" == *"[stale]"* ]] && mode=stale
+          [[ "$TITLE" == *"[partial]"* ]] && mode=partial
+          [[ "$DRAFT" == true ]] && mode=draft
+          echo "variant=$variant" >> "$GITHUB_OUTPUT"
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+      - name: Exercise native direct-post path
+        id: publish
+        if: steps.config.outputs.mode != 'draft'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MODE: ${{ steps.config.outputs.mode }}
+          MARKER: naive-live-${{ github.run_id }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          commit_id="$HEAD_SHA"
+          if [[ "$MODE" == stale ]]; then
+            commits="$(gh api --paginate "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/commits?per_page=100" | jq -s add)"
+            test "$(jq length <<<"$commits")" -ge 2
+            commit_id="$(jq -r '.[-2].sha' <<<"$commits")"
+            test "$commit_id" != "$HEAD_SHA"
+          fi
+
+          jq -n \
+            --arg marker "$MARKER" \
+            --arg commit "$commit_id" \
+            --arg mode "$MODE" \
+            '{
+              event:"COMMENT",
+              body:("<!-- " + $marker + " -->\nTrusted fixed live-posting test."),
+              commit_id:$commit,
+              comments:(
+                if $mode == "stale" then
+                  [{path:"live-posting-probe.txt",line:1,side:"RIGHT",body:"stale fixed comment"}]
+                elif $mode == "partial" then
+                  [
+                    {path:"live-posting-probe.txt",line:1,side:"RIGHT",body:"first fixed comment"},
+                    {path:"live-posting-probe.txt",line:999,side:"RIGHT",body:"forced invalid second comment"}
+                  ]
+                else
+                  [
+                    {path:"live-posting-probe.txt",line:1,side:"RIGHT",body:"first fixed comment"},
+                    {path:"live-posting-probe.txt",line:2,side:"RIGHT",body:"second fixed comment"}
+                  ]
+                end
+              )
+            }' > review.json
+
+          gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews" \
+            --method POST \
+            --input review.json \
+            > posted-review.json
+      - name: Verify observed GitHub state
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          MODE: ${{ steps.config.outputs.mode }}
+          VARIANT: ${{ steps.config.outputs.variant }}
+          OUTCOME: ${{ steps.publish.outcome }}
+          MARKER: naive-live-${{ github.run_id }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [[ "$MODE" == draft ]]; then
+            test "$OUTCOME" = skipped
+            workflow_name="Agent Review"
+            [[ "$VARIANT" == naive-b ]] && workflow_name="Agent Review (undefended)"
+            run_id=""
+            for _ in $(seq 1 12); do
+              run_id="$(
+                gh api "repos/${GITHUB_REPOSITORY}/actions/runs?event=pull_request&head_sha=${HEAD_SHA}&per_page=100" \
+                  --jq ".workflow_runs | map(select(.name == \"${workflow_name}\")) | sort_by(.created_at) | last | .id // empty"
+              )"
+              [[ -n "$run_id" ]] && break
+              sleep 5
+            done
+            test -n "$run_id"
+            conclusion="$(
+              gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${run_id}/jobs" \
+                --jq '.jobs | map(select(.name == "review")) | first | .conclusion'
+            )"
+            test "$conclusion" = skipped
+            observed="draft_review_job_skipped"
+          else
+            reviews="$(
+              gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/reviews" \
+                --jq "[.[] | select(.body | startswith(\"<!-- ${MARKER} -->\"))]"
+            )"
+            case "$MODE" in
+              normal)
+                test "$OUTCOME" = success
+                test "$(jq length <<<"$reviews")" -eq 1
+                review_id="$(jq -r '.[0].id' <<<"$reviews")"
+                comments="$(
+                  gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}/comments" \
+                    --jq "[.[] | select(.pull_request_review_id == ${review_id})] | length"
+                )"
+                test "$comments" -eq 2
+                observed="two_comment_review_posted"
+                ;;
+              stale)
+                test "$OUTCOME" = success
+                test "$(jq length <<<"$reviews")" -eq 1
+                stale_commit="$(jq -r '.[0].commit_id' <<<"$reviews")"
+                test "$stale_commit" != "$HEAD_SHA"
+                observed="stale_review_accepted"
+                ;;
+              partial)
+                test "$OUTCOME" = failure
+                test "$(jq length <<<"$reviews")" -eq 0
+                observed="invalid_second_comment_rejected_atomically"
+                ;;
+            esac
+          fi
+          jq -n \
+            --arg mode "$MODE" \
+            --arg variant "$VARIANT" \
+            --arg outcome "$OUTCOME" \
+            --arg observed "$observed" \
+            --arg head "$HEAD_SHA" \
+            '{mode:$mode,variant:$variant,publication_outcome:$outcome,observed:$observed,head_sha:$head,verified:true}' \
+            > live-result.json
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        with:
+          name: naive-live-result-${{ github.run_id }}
+          path: live-result.json
+          if-no-files-found: error
+          retention-days: 30
