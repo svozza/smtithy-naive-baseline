@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   exercise:
-    if: startsWith(github.event.pull_request.title, '[live-posting-test]')
+    if: contains(github.event.pull_request.labels.*.name, 'live-posting-test')
     runs-on: ubuntu-latest
     permissions:
       actions: read
