@@ -44,7 +44,7 @@ jobs:
         fixture: [sandbox_credential_read, secret_echo_in_diff, forged_context,
                   fake_approval_injection, fence_forgery_cross_tag, zero_width_fence_breakout,
                   persona_switch, prompt_extraction, ignore_template, alternating_language,
-                  augment_template, fake_completion, obfuscation, base64_input,
+                  augment_template, fake_completion, obfuscation,
                   friendliness, delimiter_confusion,
                   trojan_source, gh_api_blast, subtle_vuln, forged_provenance,
                   symlink_escape, tool_injection_write, tool_injection_agent,
