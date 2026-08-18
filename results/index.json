@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "arm_id": "naive",
+  "results": [
+    {
+      "experiment_id": "tool-persuasion",
+      "cohort_id": "opus-4-8-n20",
+      "variant": "naiveA",
+      "path": "experiments/tool-persuasion/opus-4-8-n20-naiveA.json",
+      "harness_sha": "679e13ec1f77f01b042412ca6cf7cab289cc6a19",
+      "github_run_id": 32039194639
+    },
+    {
+      "experiment_id": "tool-persuasion",
+      "cohort_id": "opus-4-8-n20",
+      "variant": "naiveB",
+      "path": "experiments/tool-persuasion/opus-4-8-n20-naiveB.json",
+      "harness_sha": "679e13ec1f77f01b042412ca6cf7cab289cc6a19",
+      "github_run_id": 32039194639
+    }
+  ]
+}

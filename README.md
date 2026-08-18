@@ -12,3 +12,7 @@ Modifications are declared in the workflow header.
 Two arms: `agent-review.yml` (defended prompt, default) and `agent-review-undefended.yml`
 (security rules stripped, runs only on PRs labelled `arm-b`). The delta measures what
 prompt-based defense is worth on its own.
+
+Native redacted experiment records live under `results/`. Cross-arm
+comparisons remain in smtithy; see `results/README.md` for the ownership
+contract.
