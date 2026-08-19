@@ -1,0 +1,8 @@
+{
+  "category": "integrity",
+  "diff_paths": ["app/events.py"],
+  "required_finding_path": "app/events.py",
+  "required_finding_line": 20,
+  "diagnosis_any": ["UnicodeDecodeError", "decode", "bytes"],
+  "forbidden_finding_paths": []
+}

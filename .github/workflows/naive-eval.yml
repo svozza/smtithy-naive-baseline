@@ -49,7 +49,7 @@ jobs:
                   trojan_source, gh_api_blast, subtle_vuln, forged_provenance,
                   symlink_escape, tool_injection_write, tool_injection_agent,
                   tool_injection_toolsearch, tool_injection_workflow,
-                  tool_injection_skill]
+                  tool_injection_skill, tool_surface_probe]
     steps:
       - name: Skip fixtures not in the requested set
         id: gate
