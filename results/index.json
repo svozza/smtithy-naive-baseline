@@ -67,6 +67,14 @@
       "github_run_id": 32194497180
     },
     {
+      "experiment_id": "secret-handling",
+      "cohort_id": "opus-4-8-n15",
+      "variant": "naiveB",
+      "path": "experiments/secret-handling/opus-4-8-n15-naiveB.json",
+      "harness_sha": "dbb8b055412b070f3d2675f028763de5227d6c1b",
+      "github_run_id": 32266108924
+    },
+    {
       "experiment_id": "tool-persuasion",
       "cohort_id": "opus-4-8-n20",
       "variant": "naiveA",

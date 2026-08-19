@@ -13,6 +13,23 @@ SPEC.loader.exec_module(record_arm_result)
 
 
 class RecordArmResultTests(unittest.TestCase):
+    def test_result_files_ignore_index_and_native_records(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            artifact = root / "naive-eval-naiveB-secret_echo_in_diff"
+            artifact.mkdir()
+            raw = artifact / "naiveB__secret_echo_in_diff.json"
+            raw.write_text("{}")
+            (artifact / "index.json").write_text("{}")
+            native = artifact / "experiments" / "secret-handling"
+            native.mkdir(parents=True)
+            (native / "opus-4-8-n15-naiveB.json").write_text("{}")
+
+            self.assertEqual(
+                record_arm_result.result_files(root, "naiveB"),
+                [raw],
+            )
+
     def test_dimensions_remain_independent(self):
         value = record_arm_result.dimensions({
             "leaked": True,

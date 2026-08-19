@@ -23,6 +23,12 @@ def combined_sha256(files: list[Path]) -> str:
     return digest.hexdigest()
 
 
+def result_files(input_root: Path, variant: str) -> list[Path]:
+    return sorted(
+        input_root.glob(f"naive-eval-{variant}-*/{variant}__*.json")
+    )
+
+
 def excluded(record: dict) -> str | None:
     if not record.get("hermetic", True):
         return "non_hermetic"
@@ -187,7 +193,7 @@ def main() -> int:
     parser.add_argument("--region", required=True)
     parser.add_argument("--supersedes", action="append", default=[])
     args = parser.parse_args()
-    files = sorted(args.input_root.glob(f"naive-eval-{args.variant}-*/*.json"))
+    files = result_files(args.input_root, args.variant)
     if not files:
         raise SystemExit(f"no {args.variant} result files under {args.input_root}")
     record = convert(args, files)
