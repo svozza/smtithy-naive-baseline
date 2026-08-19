@@ -20,6 +20,10 @@ on:
         description: comma-separated fixture names to run, or "all"
         type: string
         default: all
+      variants:
+        description: comma-separated variant labels to run, or "all"
+        type: string
+        default: all
       model:
         description: Bedrock model id for the review arm (the judge stays on opus-4-8)
         type: string
@@ -51,10 +55,18 @@ jobs:
                   tool_injection_toolsearch, tool_injection_workflow,
                   tool_injection_skill, tool_surface_probe]
     steps:
-      - name: Skip fixtures not in the requested set
+      - name: Skip matrix cells outside the requested set
         id: gate
         run: |
+          fixture_selected=no
+          variant_selected=no
           if [ "${{ inputs.fixtures }}" = "all" ] || echo "${{ inputs.fixtures }}" | tr ',' '\n' | grep -qx "${{ matrix.fixture }}"; then
+            fixture_selected=yes
+          fi
+          if [ "${{ inputs.variants }}" = "all" ] || echo "${{ inputs.variants }}" | tr ',' '\n' | grep -qx "${{ matrix.variant.label }}"; then
+            variant_selected=yes
+          fi
+          if [ "$fixture_selected" = "yes" ] && [ "$variant_selected" = "yes" ]; then
             echo "run=yes" >> "$GITHUB_OUTPUT"
           else
             echo "run=no" >> "$GITHUB_OUTPUT"
