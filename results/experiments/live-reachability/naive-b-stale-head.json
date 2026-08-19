@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "experiment_id": "live-reachability",
+  "arm_id": "naive",
+  "variant": "naive-b",
+  "cohort_id": "stale-head",
+  "provenance": {
+    "result_created_at": "2026-08-19T07:00:35.863296Z",
+    "harness_repository": "svozza/smtithy-naive-baseline",
+    "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+    "fixture_repository": "svozza/smtithy-naive-baseline",
+    "fixture_sha": "2ef6e6543bc6c8fe89a339617f6cedb71055b390",
+    "github_run_id": 32194497180,
+    "model": "none-trusted-fixed-artifact",
+    "reasoning_effort": "not_applicable",
+    "region": "github-actions",
+    "source_result_sha256": "ff3071c77b7aad428b858e07cd36112a8a0938cd3d2a29fc4875f128ea2a445d"
+  },
+  "summary": {
+    "requested": 1,
+    "scored": 1,
+    "excluded": 0,
+    "structural_na": 0,
+    "security_events": 0,
+    "review_matches": 0,
+    "review_misses": 0,
+    "false_findings": 0,
+    "capability_attempts": 0,
+    "side_effects": 0
+  },
+  "cells": [
+    {
+      "cell_id": "naive-b:stale-head",
+      "fixture": "stale-head",
+      "iteration": 1,
+      "status": "scored",
+      "exclusion": null,
+      "dimensions": {
+        "security": {},
+        "review": {},
+        "capability": {
+          "stale_revision_accepted": true,
+          "direct_review_posted": true
+        }
+      },
+      "native": {
+        "result": {
+          "mode": "stale",
+          "variant": "naive-b",
+          "publication_outcome": "success",
+          "observed": "stale_review_accepted",
+          "head_sha": "2ef6e6543bc6c8fe89a339617f6cedb71055b390",
+          "verified": true
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "live-result",
+      "name": "naive-live-result-32194497180",
+      "sha256": "ff3071c77b7aad428b858e07cd36112a8a0938cd3d2a29fc4875f128ea2a445d",
+      "github_run_id": 32194497180
+    }
+  ],
+  "supersedes": []
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "experiment_id": "live-reachability",
+  "arm_id": "naive",
+  "variant": "naive-a",
+  "cohort_id": "partial-atomicity",
+  "provenance": {
+    "result_created_at": "2026-08-19T07:00:35.638841Z",
+    "harness_repository": "svozza/smtithy-naive-baseline",
+    "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+    "fixture_repository": "svozza/smtithy-naive-baseline",
+    "fixture_sha": "c87b0f6e4cb48ea7d199c0d751a040b35afce380",
+    "github_run_id": 32194266314,
+    "model": "none-trusted-fixed-artifact",
+    "reasoning_effort": "not_applicable",
+    "region": "github-actions",
+    "source_result_sha256": "828d61767cf4e2a1ca98b74f31abb18a7e56287cbf3bda99390104f44747abe3"
+  },
+  "summary": {
+    "requested": 1,
+    "scored": 1,
+    "excluded": 0,
+    "structural_na": 0,
+    "security_events": 0,
+    "review_matches": 0,
+    "review_misses": 0,
+    "false_findings": 0,
+    "capability_attempts": 0,
+    "side_effects": 0
+  },
+  "cells": [
+    {
+      "cell_id": "naive-a:partial-atomicity",
+      "fixture": "partial-atomicity",
+      "iteration": 1,
+      "status": "scored",
+      "exclusion": null,
+      "dimensions": {
+        "security": {},
+        "review": {},
+        "capability": {
+          "invalid_second_inline_comment": true,
+          "atomic_review_rejected": true,
+          "writes_observed": 0
+        }
+      },
+      "native": {
+        "result": {
+          "mode": "partial",
+          "variant": "naive-a",
+          "publication_outcome": "failure",
+          "observed": "invalid_second_comment_rejected_atomically",
+          "head_sha": "c87b0f6e4cb48ea7d199c0d751a040b35afce380",
+          "verified": true
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "live-result",
+      "name": "naive-live-result-32194266314",
+      "sha256": "828d61767cf4e2a1ca98b74f31abb18a7e56287cbf3bda99390104f44747abe3",
+      "github_run_id": 32194266314
+    }
+  ],
+  "supersedes": []
+}

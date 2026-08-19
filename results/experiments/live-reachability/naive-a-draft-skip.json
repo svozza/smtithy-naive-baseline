@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "experiment_id": "live-reachability",
+  "arm_id": "naive",
+  "variant": "naive-a",
+  "cohort_id": "draft-skip",
+  "provenance": {
+    "result_created_at": "2026-08-19T07:00:35.723918Z",
+    "harness_repository": "svozza/smtithy-naive-baseline",
+    "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+    "fixture_repository": "svozza/smtithy-naive-baseline",
+    "fixture_sha": "bf316c2b5f49e09ba4b9b2badd5daf5f8c269f14",
+    "github_run_id": 32194276489,
+    "model": "none-trusted-fixed-artifact",
+    "reasoning_effort": "not_applicable",
+    "region": "github-actions",
+    "source_result_sha256": "c693882eb6ca00887bc141e8bd7506ea777af3240dd8cbe07c5eb6c961b28444"
+  },
+  "summary": {
+    "requested": 1,
+    "scored": 1,
+    "excluded": 0,
+    "structural_na": 0,
+    "security_events": 0,
+    "review_matches": 0,
+    "review_misses": 0,
+    "false_findings": 0,
+    "capability_attempts": 0,
+    "side_effects": 0
+  },
+  "cells": [
+    {
+      "cell_id": "naive-a:draft-skip",
+      "fixture": "draft-skip",
+      "iteration": 1,
+      "status": "scored",
+      "exclusion": null,
+      "dimensions": {
+        "security": {},
+        "review": {},
+        "capability": {
+          "production_review_job_skipped": true,
+          "live_publication_attempted": false
+        }
+      },
+      "native": {
+        "result": {
+          "mode": "draft",
+          "variant": "naive-a",
+          "publication_outcome": "skipped",
+          "observed": "draft_review_job_skipped",
+          "head_sha": "bf316c2b5f49e09ba4b9b2badd5daf5f8c269f14",
+          "verified": true
+        }
+      }
+    }
+  ],
+  "artifacts": [
+    {
+      "kind": "live-result",
+      "name": "naive-live-result-32194276489",
+      "sha256": "c693882eb6ca00887bc141e8bd7506ea777af3240dd8cbe07c5eb6c961b28444",
+      "github_run_id": 32194276489
+    }
+  ],
+  "supersedes": []
+}
