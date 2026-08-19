@@ -3,6 +3,70 @@
   "arm_id": "naive",
   "results": [
     {
+      "experiment_id": "live-reachability",
+      "cohort_id": "draft-skip",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/naive-a-draft-skip.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194276489
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "draft-skip",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/naive-b-draft-skip.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194521989
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "normal",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/naive-a-normal.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194249890
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "normal",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/naive-b-normal.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194487114
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "partial-atomicity",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/naive-a-partial-atomicity.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194266314
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "partial-atomicity",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/naive-b-partial-atomicity.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194508033
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "stale-head",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/naive-a-stale-head.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194257730
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "stale-head",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/naive-b-stale-head.json",
+      "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
+      "github_run_id": 32194497180
+    },
+    {
       "experiment_id": "tool-persuasion",
       "cohort_id": "opus-4-8-n20",
       "variant": "naiveA",
