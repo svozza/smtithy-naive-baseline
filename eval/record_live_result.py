@@ -53,9 +53,9 @@ def convert(args: argparse.Namespace) -> dict:
         "cohort_id": args.kind,
         "provenance": {
             "result_created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "harness_repository": "svozza/smtithy-naive-baseline",
+            "harness_repository": "svozza/aceiro-naive-baseline",
             "harness_sha": args.harness_sha,
-            "fixture_repository": "svozza/smtithy-naive-baseline",
+            "fixture_repository": "svozza/aceiro-naive-baseline",
             "fixture_sha": result["head_sha"],
             "github_run_id": args.run_id,
             "model": "none-trusted-fixed-artifact",

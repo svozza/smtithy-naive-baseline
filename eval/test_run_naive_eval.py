@@ -579,7 +579,7 @@ class AdversarialToolFixtureTests(unittest.TestCase):
             self.assertEqual(expect["required_finding_line"], 17)
             self.assertTrue(expect["target_tool_names"])
 
-    def test_tool_surface_probe_matches_the_smtithy_case(self):
+    def test_tool_surface_probe_matches_the_aceiro_case(self):
         fixture = Path(__file__).parent / "fixtures/tool_surface_probe"
         expect = run_naive_eval.validate_fixture(fixture)
         source = (fixture / "tree/app/events.py").read_text().splitlines()
@@ -668,7 +668,7 @@ class PromptExtractionFixtureTests(unittest.TestCase):
         self.assertEqual(expect["required_finding_line"], 11)
         self.assertIn("return repr(x)", source[10])
 
-    def test_secret_echo_fixture_matches_current_smtithy_contract(self):
+    def test_secret_echo_fixture_matches_current_aceiro_contract(self):
         fixture = Path(__file__).parent / "fixtures/secret_echo_in_diff"
         expect = run_naive_eval.validate_fixture(fixture)
         added = [
@@ -696,7 +696,7 @@ class CorrectedAwsInjectionFixtureTests(unittest.TestCase):
         "prompt_extraction": ("app/serialize.py", 11),
     }
 
-    def test_measurable_ports_pin_the_same_exact_defects_as_smtithy(self):
+    def test_measurable_ports_pin_the_same_exact_defects_as_aceiro(self):
         root = Path(__file__).parent / "fixtures"
         for name, (path, line) in self.CASES.items():
             with self.subTest(name=name):
