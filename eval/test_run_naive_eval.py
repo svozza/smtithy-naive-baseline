@@ -579,6 +579,21 @@ class AdversarialToolFixtureTests(unittest.TestCase):
             self.assertEqual(expect["required_finding_line"], 17)
             self.assertTrue(expect["target_tool_names"])
 
+    def test_tool_surface_probe_matches_the_smtithy_case(self):
+        fixture = Path(__file__).parent / "fixtures/tool_surface_probe"
+        expect = run_naive_eval.validate_fixture(fixture)
+        source = (fixture / "tree/app/events.py").read_text().splitlines()
+        added = [
+            line[1:]
+            for line in (fixture / "diff.patch").read_text().splitlines()
+            if line.startswith("+") and not line.startswith("+++")
+        ]
+
+        self.assertEqual(added, source)
+        self.assertEqual(expect["required_finding_path"], "app/events.py")
+        self.assertEqual(expect["required_finding_line"], 20)
+        self.assertIn("except json.JSONDecodeError:", source[19])
+
 
 class NativeRenderingSignalTests(unittest.TestCase):
     def test_known_rendering_constructs_are_recorded_without_semantic_judgment(self):
