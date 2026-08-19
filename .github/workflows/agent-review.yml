@@ -1,4 +1,4 @@
-# Naive-A: the DEFENDED baseline arm of the smtithy bake-off.
+# Naive-A: the DEFENDED baseline arm of the Aceiro bake-off.
 #
 # Source: ferrumio/pydynox, .github/workflows/agent-review.yml (Apache-2.0).
 # Copied deliberately verbatim — this is the artifact under test, not our design.
@@ -45,7 +45,7 @@ jobs:
           CLAUDE_CODE_USE_BEDROCK: "1"
           AWS_BEARER_TOKEN_BEDROCK: ${{ secrets.AWS_BEARER_TOKEN_BEDROCK }}
           AWS_REGION: us-east-1
-          # MODIFICATION 1: model parity with the smtithy arm.
+          # MODIFICATION 1: model parity with the Aceiro arm.
           ANTHROPIC_MODEL: global.anthropic.claude-opus-4-8[1m]
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}

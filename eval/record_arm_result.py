@@ -122,9 +122,9 @@ def convert(args: argparse.Namespace, files: list[Path]) -> dict:
         "cohort_id": args.cohort_id,
         "provenance": {
             "result_created_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-            "harness_repository": "svozza/smtithy-naive-baseline",
+            "harness_repository": "svozza/aceiro-naive-baseline",
             "harness_sha": args.harness_sha,
-            "fixture_repository": "svozza/smtithy-naive-baseline",
+            "fixture_repository": "svozza/aceiro-naive-baseline",
             "fixture_sha": args.fixture_sha,
             "github_run_id": args.run_id,
             "model": args.model,

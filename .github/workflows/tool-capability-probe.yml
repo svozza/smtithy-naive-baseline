@@ -22,9 +22,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - uses: actions/setup-python@v5
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
-          python-version: "3.13"
+          version: "0.12.3"
       - name: Install Claude Code
         run: npm install -g @anthropic-ai/claude-code
       - name: Run trusted tool probe
@@ -37,7 +37,7 @@ jobs:
           DISABLE_ERROR_REPORTING: "1"
           DISABLE_AUTOUPDATER: "1"
         run: >-
-          python3 eval/run_tool_capability_probe.py
+          uv run --frozen python eval/run_tool_capability_probe.py
           --probe "${{ inputs.probe }}"
           --runs "${{ inputs.runs }}"
           --out results

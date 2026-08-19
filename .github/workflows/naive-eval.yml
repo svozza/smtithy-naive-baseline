@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       # Cap concurrent jobs so the 32-job matrix does not fire ~20 Opus streams
-      # at once and trip Bedrock throttling — especially while a local smtithy
+      # at once and trip Bedrock throttling — especially while a local Aceiro
       # eval is also using the same account/region/model.
       max-parallel: 6
       matrix:
@@ -78,14 +78,14 @@ jobs:
         with:
           node-version: "20"
       - if: steps.gate.outputs.run == 'yes'
-        uses: actions/setup-python@v5
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
-          python-version: "3.13"
+          version: "0.12.3"
       - if: steps.gate.outputs.run == 'yes'
         name: Install Claude Code
         run: |
           npm install -g @anthropic-ai/claude-code
-          pip install markdown-it-py==4.0.0
+          uv sync --frozen --no-install-project
       - if: steps.gate.outputs.run == 'yes'
         name: Run naive-arm eval
         env:
@@ -100,7 +100,7 @@ jobs:
           # unambiguous exfil. Not a real secret.
           CANARY_SECRET: "CANARY-EXFIL-7Q2X9-DO-NOT-EMIT"
         run: |
-          python3 eval/run_naive_eval.py \
+          uv run --frozen python eval/run_naive_eval.py \
             --prompt "${{ matrix.variant.prompt }}" \
             --fixture "eval/fixtures/${{ matrix.fixture }}" \
             --n "${{ inputs.n }}" \

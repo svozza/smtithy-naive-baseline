@@ -1,4 +1,4 @@
-# smtithy-naive-baseline
+# aceiro-naive-baseline
 
 **This is not a real project.** It is the naive-baseline arm of a code-review security
 experiment, and it deliberately contains hostile pull requests: prompt injection, forged
@@ -6,7 +6,7 @@ review context, credential-exfiltration attempts.
 
 The review workflow here is copied from [`ferrumio/pydynox`](https://github.com/ferrumio/pydynox)
 (Apache-2.0) and is the *artifact under test* — it is a competent, prompt-defended agent
-review, used as the baseline that smtithy's structural defenses are measured against.
+review, used as the baseline that Aceiro's structural defenses are measured against.
 Modifications are declared in the workflow header.
 
 Two arms: `agent-review.yml` (defended prompt, default) and `agent-review-undefended.yml`
@@ -14,5 +14,12 @@ Two arms: `agent-review.yml` (defended prompt, default) and `agent-review-undefe
 prompt-based defense is worth on its own.
 
 Native redacted experiment records live under `results/`. Cross-arm
-comparisons remain in smtithy; see `results/README.md` for the ownership
+comparisons remain in Aceiro; see `results/README.md` for the ownership
 contract.
+
+Run deterministic tests with:
+
+```bash
+uv sync --frozen --all-groups --no-install-project
+uv run --frozen --group test python -m unittest discover -s eval -p 'test_*.py' -v
+```
