@@ -3,6 +3,54 @@
   "arm_id": "naive",
   "results": [
     {
+      "experiment_id": "architecture-sensitive",
+      "cohort_id": "2026-08-20-opus-4-8-n3",
+      "variant": "naiveA",
+      "path": "experiments/architecture-sensitive/2026-08-20-opus-4-8-n3-naiveA.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32314621564
+    },
+    {
+      "experiment_id": "architecture-sensitive",
+      "cohort_id": "2026-08-20-opus-4-8-n3",
+      "variant": "naiveB",
+      "path": "experiments/architecture-sensitive/2026-08-20-opus-4-8-n3-naiveB.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32314621564
+    },
+    {
+      "experiment_id": "common-prompt-attacks",
+      "cohort_id": "2026-08-20-opus-4-8-n15",
+      "variant": "naiveA",
+      "path": "experiments/common-prompt-attacks/2026-08-20-opus-4-8-n15-naiveA.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32309133130
+    },
+    {
+      "experiment_id": "common-prompt-attacks",
+      "cohort_id": "2026-08-20-opus-4-8-n15",
+      "variant": "naiveB",
+      "path": "experiments/common-prompt-attacks/2026-08-20-opus-4-8-n15-naiveB.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32309133130
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "draft",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/2026-08-20-naive-a-draft.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335442173
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "draft",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/2026-08-20-naive-b-draft.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335458688
+    },
+    {
       "experiment_id": "live-reachability",
       "cohort_id": "draft-skip",
       "variant": "naive-a",
@@ -29,10 +77,42 @@
     {
       "experiment_id": "live-reachability",
       "cohort_id": "normal",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/2026-08-20-naive-a-normal.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335438664
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "normal",
       "variant": "naive-b",
       "path": "experiments/live-reachability/naive-b-normal.json",
       "harness_sha": "dfee2b66f37b38e91f79ef76f65112d553dd1ec5",
       "github_run_id": 32194487114
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "normal",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/2026-08-20-naive-b-normal.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335456539
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "partial",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/2026-08-20-naive-a-partial.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335442261
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "partial",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/2026-08-20-naive-b-partial.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335456874
     },
     {
       "experiment_id": "live-reachability",
@@ -52,6 +132,22 @@
     },
     {
       "experiment_id": "live-reachability",
+      "cohort_id": "stale",
+      "variant": "naive-a",
+      "path": "experiments/live-reachability/2026-08-20-naive-a-stale.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335439810
+    },
+    {
+      "experiment_id": "live-reachability",
+      "cohort_id": "stale",
+      "variant": "naive-b",
+      "path": "experiments/live-reachability/2026-08-20-naive-b-stale.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32335457283
+    },
+    {
+      "experiment_id": "live-reachability",
       "cohort_id": "stale-head",
       "variant": "naive-a",
       "path": "experiments/live-reachability/naive-a-stale-head.json",
@@ -68,11 +164,75 @@
     },
     {
       "experiment_id": "secret-handling",
+      "cohort_id": "2026-08-20-opus-4-8-n100",
+      "variant": "naiveA",
+      "path": "experiments/secret-handling/2026-08-20-opus-4-8-n100-naiveA.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32319986792
+    },
+    {
+      "experiment_id": "secret-handling",
+      "cohort_id": "2026-08-20-opus-4-8-n15",
+      "variant": "naiveB",
+      "path": "experiments/secret-handling/2026-08-20-opus-4-8-n15-naiveB.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32324804559
+    },
+    {
+      "experiment_id": "secret-handling",
+      "cohort_id": "2026-08-20-sonnet-4-5-n15",
+      "variant": "naiveA",
+      "path": "experiments/secret-handling/2026-08-20-sonnet-4-5-n15-naiveA.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32319337653
+    },
+    {
+      "experiment_id": "secret-handling",
+      "cohort_id": "2026-08-20-sonnet-4-5-n15",
+      "variant": "naiveB",
+      "path": "experiments/secret-handling/2026-08-20-sonnet-4-5-n15-naiveB.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32319337653
+    },
+    {
+      "experiment_id": "secret-handling",
       "cohort_id": "opus-4-8-n15",
       "variant": "naiveB",
       "path": "experiments/secret-handling/opus-4-8-n15-naiveB.json",
       "harness_sha": "dbb8b055412b070f3d2675f028763de5227d6c1b",
       "github_run_id": 32266108924
+    },
+    {
+      "experiment_id": "tool-persuasion",
+      "cohort_id": "2026-08-20-opus-4-8-n20",
+      "variant": "naiveA",
+      "path": "experiments/tool-persuasion/2026-08-20-opus-4-8-n20-naiveA.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32315262962
+    },
+    {
+      "experiment_id": "tool-persuasion",
+      "cohort_id": "2026-08-20-opus-4-8-n20",
+      "variant": "naiveB",
+      "path": "experiments/tool-persuasion/2026-08-20-opus-4-8-n20-naiveB.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32315262962
+    },
+    {
+      "experiment_id": "tool-persuasion",
+      "cohort_id": "2026-08-20-sonnet-4-5-n20",
+      "variant": "naiveA",
+      "path": "experiments/tool-persuasion/2026-08-20-sonnet-4-5-n20-naiveA.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32317649017
+    },
+    {
+      "experiment_id": "tool-persuasion",
+      "cohort_id": "2026-08-20-sonnet-4-5-n20",
+      "variant": "naiveB",
+      "path": "experiments/tool-persuasion/2026-08-20-sonnet-4-5-n20-naiveB.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32317649017
     },
     {
       "experiment_id": "tool-persuasion",
@@ -89,6 +249,14 @@
       "path": "experiments/tool-persuasion/opus-4-8-n20-naiveB.json",
       "harness_sha": "679e13ec1f77f01b042412ca6cf7cab289cc6a19",
       "github_run_id": 32039194639
+    },
+    {
+      "experiment_id": "trusted-capability",
+      "cohort_id": "2026-08-20-opus-4-8",
+      "variant": "shared-capability-surface",
+      "path": "experiments/trusted-capability/2026-08-20-opus-4-8.json",
+      "harness_sha": "3955471152bb688636d636eebb6478b46562a1d9",
+      "github_run_id": 32325611737
     }
   ]
 }
